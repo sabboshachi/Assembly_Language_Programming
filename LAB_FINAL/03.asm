@@ -1,0 +1,22 @@
+;#PRINT "HELLO"#
+
+.MODEL SMALL
+.STACK 100H
+.DATA 
+SUSMITA DB "HELLO$"
+.CODE
+MAIN PROC
+    
+    MOV AX,@DATA
+    MOV DS,AX
+    
+    LEA DX,SUSMITA 
+
+    MOV AH, 9
+    INT 21H 
+   
+    MOV AH, 4CH
+    INT 21H
+    
+    MAIN ENDP
+END MAIN

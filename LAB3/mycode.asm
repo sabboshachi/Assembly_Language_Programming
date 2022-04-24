@@ -1,0 +1,105 @@
+.MODEL SMALL
+.STACK 100H
+.DATA
+
+P DW 10
+R DW 0
+
+.CODE   
+MAIN PROC  
+    MOV AX,@DATA; FOR DATA SEGMENT A MUST USE COMMAND IF USING DATA COMMAND
+    MOV DS,AX
+    
+   
+
+    MOV BX, 0   ; INITIAKIZING THE BX
+    
+    
+    INPUT:
+    
+    
+    MOV AH,1    ; TAKING INPUT
+    INT 21H 
+    
+    CMP AL, 13D ; ENTERING THE VALUE OF ENTER KEY
+    
+    JNE WORK    ; IF ENTER KEY NOT FOUND
+    JE PRINT    ; IF ENTER KEY FOUND
+    
+    WORK: 
+    
+    SUB AL, 30H ; 30 SUB TO MAKE THE TAKEN NUMBER IN DECIMAL
+    MOV CL, AL  ; MOVING THE DECIMAL VALUE FROM AL TO CL
+    
+    MOV CH, 0   ; CLEARING THE VALUE IN CH REGESTER
+    
+    MOV AX,BX   ; HAVE TO MOVE DATA IN AX BEFORE DOING MUL OPS
+    
+    MUL P       ; MULIPLYING WITH 10 AS P DEFINED IN UP
+    
+    MOV BX, AX  ; AFTER MUL AGAIN MOVE IN BX REG
+    
+    ADD BX, CX  ; ADDING THE VALUES IN BX AND CX THEN STORED IN BX
+    
+    JMP INPUT   ; IF THE CONDITION ISN'T FILLED UP JUMP BACK TO INPUT
+    
+    PRINT:
+                ; INITIAKIZING THE VALUE IN DX
+    MOV DX,0
+    
+    MOV AX,BX
+    
+    DIV P
+    
+    INC R       ; ICRERMENT OF R AS DEFINED AT BEGINING
+    
+    
+               
+    PUSH DX     ; PUSH THE REMINDER IN DX
+    
+    CMP AX,0
+    
+    JE NEWLINE
+    
+    MOV BX,AX
+    
+    LOOP PRINT  ; PPUSHING EVERY RIMINDER IN DX UNTLL AX IS ZERO AND SO THR LOOP RUNS
+    
+    
+    
+    NEWLINE:
+    
+    MOV CX,R
+    
+    MOV AH,2
+    
+    MOV DL,0DH
+    INT 21H    
+    
+    MOV DL,0AH
+    INT 21H
+    
+    
+    FINAL:     ; POPING INDIVIDUAL DATA FROM DX AND FRINT ANS SO THE LOOP NAMED FINAL RUNS
+                
+    POP DX
+    
+    ADD DL, 30H 
+    MOV AH, 2
+    
+    INT 21H
+    LOOP FINAL
+    
+    
+    
+    
+    
+    MOV AH, 4CH ;
+    INT 21H 
+    
+     
+                
+    MAIN ENDP   ; END OF MAIN FUNCTION
+END MAIN        ; END OF PROGRAM
+    
+ 
